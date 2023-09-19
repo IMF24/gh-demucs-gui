@@ -194,6 +194,8 @@ logoIMF.place(x = 110, y = 85)
 logoOkt = Label(root, bg = BG_COLOR, image = AV_OKT, justify = 'center')
 logoOkt.place(x = 465, y = 85)
 
+
+
 # This frame is where all of our widgets will go.
 mainFrame = Frame(root, bg = BG_COLOR)
 mainFrame.pack(fill = 'both', expand = 1)
