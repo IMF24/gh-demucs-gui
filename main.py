@@ -102,7 +102,7 @@ def split_audio() -> None:
 
         for (file) in (OS.listdir(".")):
             if (OS.path.isfile(file)) and (file == f"other{origExtension}"):
-                if (model == "htdemucs_6s"): OS.rename(file, f"song{origExtension}")
+                if (model.get() == "Demucs 4 6 Stem"): OS.rename(file, f"song{origExtension}")
                 else: OS.rename(file, f"guitar{origExtension}")
                 break
 

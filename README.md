@@ -15,6 +15,10 @@ To set up everything for use, **run the** `install.bat` **file in the folder FIR
 
 **You will need to say Yes (type "Y" or "y") to the uninstall prompt for Torch!** You need that if you want to use CUDA (your graphics card) for splitting audio.
 
+**If you want the drum splitting to work, you need to install** `drumsep` **separately!** To add in `drumsep` for use with the program:
+1. Create a `drum_split` folder in the `res` folder.
+2. [Download the model file from this link](https://drive.google.com/uc?export=download&id=1g9dD68Fhn-fvTFHRApgFy8bsHUsYJD9o) and place it inside of the `drum_split` folder.
+
 ### More documentation coming soon...
 
 # Credits
