@@ -130,6 +130,7 @@ def split_audio() -> None:
 
     SHUT.rmtree(f"{tempDir}/{useModel}", True)
     SHUT.rmtree(f"{tempDir}/modelo_final", True)
+    OS.remove(tempDir)
 
     if (splitDrums.get()) and (excludeOrigDrums.get()):
         add_output_msg("Excluding original drums file...")
