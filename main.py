@@ -111,7 +111,7 @@ def split_audio() -> None:
 
         # Rename the drum tracks?
         if (splitDrums.get()):
-            OS.chdir(f"../modelo_final/drums")
+            OS.chdir(f"../../modelo_final/drums")
 
             wrongDrumNames = [f"bombo{origExtension}", f"redoblante{origExtension}", f"toms{origExtension}", f"platillos{origExtension}"]
 
