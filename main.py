@@ -71,7 +71,8 @@ def split_audio() -> None:
     else: useFormat = ""
 
     # NOW SPLIT IT OUT!
-    cmd = f"-n {useModel} -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{audioOutPath.get()}\" \"{audioSource.get()}\""
+    tempDir = OS.path.join(audioOutPath.get(), "_GHDMGUI_StemTemp")
+    cmd = f"-n {useModel} -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{tempDir}\" \"{audioSource.get()}\""
 
     print(f"demucs command:\n{cmd}")
 
@@ -83,7 +84,7 @@ def split_audio() -> None:
         if (useFormat == ""): origExtension = ".wav"
         else: origExtension = f".{useFormat.split('--')[-1]}"
         originalFileName = audioSource.get().split("/")[-1] + origExtension
-        drumTrackName = f"{audioOutPath.get()}/{useModel}/{originalFileName.split('.')[0]}/drums{origExtension}"
+        drumTrackName = f"{tempDir}/{useModel}/{originalFileName.split('.')[0]}/drums{origExtension}"
         cmdSplitDrums = f"--repo \"{resource_path('res/drum_split')}\" -n modelo_final -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{audioOutPath.get()}\" \"{drumTrackName}\""
 
         print(f"stem extension: {origExtension}")
@@ -93,7 +94,7 @@ def split_audio() -> None:
 
         demucs.separate.main(shlex.split(cmdSplitDrums))
 
-    resultPath = f"{audioOutPath.get()}/{useModel}/{originalFileName.split(origExtension)[0]}"
+    resultPath = f"{tempDir}/{useModel}/{originalFileName.split(origExtension)[0]}"
     if (useGHNames.get()):
         add_output_msg("Renaming audio files to their Guitar Hero names...")
 
@@ -108,7 +109,7 @@ def split_audio() -> None:
 
         # Rename the drum tracks?
         if (splitDrums.get()):
-            OS.chdir(f"../../modelo_final/drums")
+            OS.chdir(f"../modelo_final/drums")
 
             wrongDrumNames = [f"bombo{origExtension}", f"redoblante{origExtension}", f"toms{origExtension}", f"platillos{origExtension}"]
 
@@ -121,18 +122,19 @@ def split_audio() -> None:
     add_output_msg("Moving audio files to original output directory...")
 
     SHUT.copytree(resultPath, audioOutPath.get(), dirs_exist_ok = True)
-    SHUT.copytree(f"{audioOutPath.get()}/modelo_final/drums", audioOutPath.get(), dirs_exist_ok = True)
+    SHUT.copytree(f"{tempDir}/modelo_final/drums", audioOutPath.get(), dirs_exist_ok = True)
 
     add_output_msg("Cleaning Demucs folders...")
 
-    SHUT.rmtree(f"{audioOutPath.get()}/{useModel}", True)
-    SHUT.rmtree(f"{audioOutPath.get()}/modelo_final", True)
+    SHUT.rmtree(f"{tempDir}/{useModel}", True)
+    SHUT.rmtree(f"{tempDir}/modelo_final", True)
 
     if (splitDrums.get()) and (excludeOrigDrums.get()):
         add_output_msg("Excluding original drums file...")
         OS.remove(f"{audioOutPath.get()}/drums{origExtension}")
     
     add_output_msg("!! -- AT LAST, ALL DONE! -- !!")
+    print("!! - AT LAST, ALL DONE! - !!")
     OS.startfile(audioOutPath.get())
 
 # Get the path to an audio file.
