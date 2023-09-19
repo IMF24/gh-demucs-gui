@@ -84,20 +84,19 @@ def split_audio() -> None:
         if (useFormat == ""): origExtension = ".wav"
         else: origExtension = f".{useFormat.split('--')[-1]}"
 
-        originalFileName = audioSource.get().split("/")[-1] + origExtension
-
         folderOutName = OS.path.splitext(audioSource.get().split('/')[-1])[0]
         drumTrackName = f"{tempDir}/{useModel}/{folderOutName}/drums{origExtension}"
+
         cmdSplitDrums = f"--repo \"{resource_path('res/drum_split')}\" -n modelo_final -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{tempDir}\" \"{drumTrackName}\""
 
         print(f"stem extension: {origExtension}")
-        print(f"original file name (for stem folder): {originalFileName}")
+        print(f"original file name (for stem folder): {folderOutName}")
         print(f"name of the drum track file: {drumTrackName}")
         print(f"split drums command:\n{cmdSplitDrums}")
 
         demucs.separate.main(shlex.split(cmdSplitDrums))
 
-    resultPath = OS.path.join(tempDir, f"{useModel}/{originalFileName.split(origExtension)[0]}")
+    resultPath = OS.path.join(tempDir, f"{useModel}/{folderOutName}")
     if (useGHNames.get()):
         add_output_msg("Renaming audio files to their Guitar Hero names...")
 
