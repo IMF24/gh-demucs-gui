@@ -94,7 +94,7 @@ def split_audio() -> None:
 
         demucs.separate.main(shlex.split(cmdSplitDrums))
 
-    resultPath = f"{tempDir}/{useModel}/{originalFileName.split(origExtension)[0]}"
+    resultPath = OS.path.join(tempDir, f"{useModel}/{originalFileName.split(origExtension)[0]}")
     if (useGHNames.get()):
         add_output_msg("Renaming audio files to their Guitar Hero names...")
 
