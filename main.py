@@ -83,10 +83,12 @@ def split_audio() -> None:
 
         if (useFormat == ""): origExtension = ".wav"
         else: origExtension = f".{useFormat.split('--')[-1]}"
+
         originalFileName = audioSource.get().split("/")[-1] + origExtension
-        folderOutName = (audioSource.get().split('/')[-1]).replace(origExtension, "")
+
+        folderOutName = OS.path.splitext(audioSource.get().split('/')[-1])[0]
         drumTrackName = f"{tempDir}/{useModel}/{folderOutName}/drums{origExtension}"
-        cmdSplitDrums = f"--repo \"{resource_path('res/drum_split')}\" -n modelo_final -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{audioOutPath.get()}\" \"{drumTrackName}\""
+        cmdSplitDrums = f"--repo \"{resource_path('res/drum_split')}\" -n modelo_final -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{tempDir}\" \"{drumTrackName}\""
 
         print(f"stem extension: {origExtension}")
         print(f"original file name (for stem folder): {originalFileName}")
