@@ -1,0 +1,6 @@
+# Ignore various directories, the usual
+__pycache__/
+build/
+dist/
+/*.spec
+res/drum_split/modelo_final.th
