@@ -72,19 +72,23 @@ def split_audio() -> None:
 
     # NOW SPLIT IT OUT!
     tempDir = OS.path.join(audioOutPath.get(), "_GHDMGUI_StemTemp")
-    cmd = f"-n {useModel} -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{tempDir}\" \"{audioSource.get()}\""
+    if (model.get() != "4 Lane Drum Stems"):
+        cmd = f"-n {useModel} -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{tempDir}\" \"{audioSource.get()}\""
+    else:
+        cmd = f"--repo \"{resource_path('res/drum_split')}\" -n modelo_final -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{tempDir}\" \"{audioSource.get()}\""
 
     print(f"demucs command:\n{cmd}")
 
     demucs.separate.main(shlex.split(cmd))
 
-    if (splitDrums.get()):
+    # Original requested format and output folder name
+    if (useFormat == ""): origExtension = ".wav"
+    else: origExtension = f".{useFormat.split('--')[-1]}"
+    folderOutName = OS.path.splitext(audioSource.get().split('/')[-1])[0]
+
+    if (splitDrums.get()) and (model.get() != "4 Lane Drum Stems"):
         add_output_msg("Splitting drum track to 4 lane...")
 
-        if (useFormat == ""): origExtension = ".wav"
-        else: origExtension = f".{useFormat.split('--')[-1]}"
-
-        folderOutName = OS.path.splitext(audioSource.get().split('/')[-1])[0]
         drumTrackName = f"{tempDir}/{useModel}/{folderOutName}/drums{origExtension}"
 
         cmdSplitDrums = f"--repo \"{resource_path('res/drum_split')}\" -n modelo_final -d {useDevice} {useFormat} --shifts {shift.get()} --overlap {overlap.get()} -o \"{tempDir}\" \"{drumTrackName}\""
@@ -110,26 +114,28 @@ def split_audio() -> None:
                 break
 
         # Rename the drum tracks?
-        if (splitDrums.get()):
+        if (splitDrums.get()) or (model.get() == "4 Lane Drum Stems"):
             OS.chdir(f"../../modelo_final/drums")
 
             wrongDrumNames = [f"bombo{origExtension}", f"redoblante{origExtension}", f"toms{origExtension}", f"platillos{origExtension}"]
 
             for (file) in (OS.listdir(".")):
                 for (x, name) in (enumerate(wrongDrumNames)):
-                    if (file == name): OS.rename(file, f"drums_{x + 1}{origExtension}")
+                        if (file == name):
+                            if (OS.path.exists(f"drums_{x + 1}{origExtension}")): OS.remove(f"drums_{x + 1}{origExtension}")
+                            OS.rename(file, f"drums_{x + 1}{origExtension}")
 
         OS.chdir(OWD)
 
     add_output_msg("Moving audio files to original output directory...")
 
     SHUT.copytree(resultPath, audioOutPath.get(), dirs_exist_ok = True)
-    SHUT.copytree(f"{tempDir}/modelo_final/drums", audioOutPath.get(), dirs_exist_ok = True)
+    if (splitDrums.get()): SHUT.copytree(f"{tempDir}/modelo_final/drums", audioOutPath.get(), dirs_exist_ok = True)
 
     add_output_msg("Cleaning Demucs folders...")
 
     SHUT.rmtree(f"{tempDir}/{useModel}", True)
-    SHUT.rmtree(f"{tempDir}/modelo_final", True)
+    if (model.get() != "4 Lane Drum Stems"): SHUT.rmtree(f"{tempDir}/modelo_final", True)
     SHUT.rmtree(tempDir, True)
 
     if (splitDrums.get()) and (excludeOrigDrums.get()):
@@ -165,6 +171,16 @@ def allow_exclude_drums() -> None:
         excludeOrigDrums.set(False)
     
     excludeOrigDrumsOption.config(state = updateState)
+
+def fix_drum_split_conflict(event: Event) -> None:
+    if (model.get() == "4 Lane Drum Stems"):
+        splitDrumsOption.config(state = 'disabled')
+        if (splitDrums.get()):
+            splitDrums.set(False)
+            excludeOrigDrums.set(False)
+            excludeOrigDrumsOption.config(state = 'disabled')
+    else:
+        splitDrumsOption.config(state = 'normal')
 
 # --------------------------------------
 # SET UP ROOT
@@ -248,7 +264,7 @@ audioFormat = StringVar()
 modelLabel = Label(modelDeviceFrame, text = "Demucs Model: ", bg = BG_COLOR, fg = FG_COLOR, justify = 'right', anchor = 'e')
 modelLabel.grid(row = 0, column = 0, padx = 5)
 
-modelSelection = TTK.OptionMenu(modelDeviceFrame, model, *[md[0] for md in DEMUCS_MODELS])
+modelSelection = TTK.OptionMenu(modelDeviceFrame, model, *[md[0] for md in DEMUCS_MODELS], command = lambda e: fix_drum_split_conflict(e))
 modelSelection.config(width = 25)
 modelSelection.grid(row = 0, column = 1, padx = 5)
 

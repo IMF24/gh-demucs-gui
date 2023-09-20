@@ -10,7 +10,8 @@ DEMUCS_MODELS = [
     ["Demucs MDX Extra Q", "mdx_extra_q"],
     ["Demucs MDX Extra", "mdx_extra"],
     ["Demucs MDX", "mdx"],
-    ["Hybrid Demucs 3 MMI", "hdemucs_mmi"]
+    ["Hybrid Demucs 3 MMI", "hdemucs_mmi"],
+    ["4 Lane Drum Stems", "modelo_final"]
 ]
 """ List of every Demucs model supported natively in Demucs 4. """
 
