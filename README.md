@@ -9,8 +9,6 @@ This is a graphical program intended for Guitar Hero charters to split out audio
 
 I have a video tutorial for this setup process if you prefer to watch through video rather than text. [Check it out here!](https://youtu.be/wjRu35c_JsY)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/wjRu35c_JsY?si=FT_8R5RNRANiZ17u" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
 Installing this program is NOT plug-and-play. It will require some setup on your part to get it to work properly.
 
 [You need Python 3.8 or later](https://python.org/downloads) to run both this program and Demucs. **When you install Python, on the very first screen that appears, check the box labelled "Add Python to PATH".**
