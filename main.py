@@ -115,15 +115,14 @@ def split_audio() -> None:
 
         # Rename the drum tracks?
         if (splitDrums.get()) or (model.get() == "4 Lane Drum Stems"):
-            OS.chdir(f"../../modelo_final/drums")
+            if (model.get() != "4 Lane Drum Stems"): OS.chdir(f"../../modelo_final/drums")
 
             wrongDrumNames = [f"bombo{origExtension}", f"redoblante{origExtension}", f"toms{origExtension}", f"platillos{origExtension}"]
 
             for (file) in (OS.listdir(".")):
                 for (x, name) in (enumerate(wrongDrumNames)):
-                        if (file == name):
-                            if (OS.path.exists(f"drums_{x + 1}{origExtension}")): OS.remove(f"drums_{x + 1}{origExtension}")
-                            OS.rename(file, f"drums_{x + 1}{origExtension}")
+                    if (file == name):
+                        OS.rename(file, f"drums_{x + 1}{origExtension}")
 
         OS.chdir(OWD)
 
