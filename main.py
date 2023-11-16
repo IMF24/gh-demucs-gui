@@ -292,7 +292,7 @@ shiftValue.place(x = 530, y = 162)
 overlapValueLabel = Label(mainFrame, text = "Overlap: ", bg = BG_COLOR, fg = FG_COLOR, justify = 'right', anchor = 'e')
 overlapValueLabel.place(x = 460, y = 190)
 
-overlapValue = TTK.Spinbox(mainFrame, from_ = 0.0, to = 1.0, increment = 0.01, textvariable = overlap, width = 5)
+overlapValue = TTK.Spinbox(mainFrame, from_ = 0.001, to = 0.999, increment = 0.001, textvariable = overlap, width = 5)
 overlapValue.place(x = 530, y = 192)
 
 # -------------- Output Options -------------- #
@@ -364,8 +364,8 @@ ToolTip(excludeOrigDrumsOption, msg = "When using 4 lane drum splitting, do you 
 ToolTip(shiftValueLabel, msg = "The number of random shifts for equivariant stabilization. This increases separation time, but improves the output result.", delay = HOVER_DELAY, follow = False, width = TOOLTIP_WIDTH)
 ToolTip(shiftValue, msg = "The number of random shifts for equivariant stabilization. This increases separation time, but improves the output result.", delay = HOVER_DELAY, follow = False, width = TOOLTIP_WIDTH)
 
-ToolTip(overlapValueLabel, msg = "Adjust the amount of overlap between prediction windows. 0.25 is default, but it can most likely be reduced to 0.1 to improve speed (not tested!)", delay = HOVER_DELAY, follow = False, width = TOOLTIP_WIDTH)
-ToolTip(overlapValue, msg = "Adjust the amount of overlap between prediction windows. 0.25 is default, but it can most likely be reduced to 0.1 to improve speed (not tested!)", delay = HOVER_DELAY, follow = False, width = TOOLTIP_WIDTH)
+ToolTip(overlapValueLabel, msg = "Adjust the amount of overlap between prediction windows; 0.25 is default. Higher values provide better results, but will lead to longer processing times. Ranges from 0.001 to 0.999.", delay = HOVER_DELAY, follow = False, width = TOOLTIP_WIDTH)
+ToolTip(overlapValue, msg = "Adjust the amount of overlap between prediction windows; 0.25 is default. Higher values provide better results, but will lead to longer processing times. Ranges from 0.001 to 0.999.", delay = HOVER_DELAY, follow = False, width = TOOLTIP_WIDTH)
 
 ToolTip(beginSplit, msg = "Run Demucs on the given audio track!", delay = HOVER_DELAY, follow = False, width = TOOLTIP_WIDTH)
 

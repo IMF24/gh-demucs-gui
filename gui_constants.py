@@ -3,7 +3,7 @@ import os as OS
 OWD = OS.getcwd()
 """ Original working directory. """
 
-VERSION = "1.0"
+VERSION = "1.1"
 """ Version of the program. """
 
 BG_COLOR = '#090C10'
